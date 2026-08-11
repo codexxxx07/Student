@@ -1,3 +1,4 @@
 {
+  "outputDirectory": "student-web/dist",
   "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
