@@ -1,0 +1,11 @@
+{
+  "name": "student-root",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "install": "cd student-web && npm install",
+    "start": "cd student-web && npm run dev",
+    "dev": "cd student-web && npm run dev",
+    "build": "cd student-web && npm run build"
+  }
+}
