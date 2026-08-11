@@ -44,36 +44,28 @@ const pages = {
 
 export default function App() {
   const [page, setPage] = useState('dashboard')
-  const [authChecked, setAuthChecked] = useState(false)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const urlAuth = params.get('auth') === 'true'
     const urlRole = params.get('role')
-    const localAuth = localStorage.getItem('isAuthenticated') === 'true'
-    const localRole = localStorage.getItem('role')
 
-    console.log('[Student] urlAuth:', urlAuth, 'urlRole:', urlRole)
-    console.log('[Student] localAuth:', localAuth, 'localRole:', localRole)
-
-    const isAuthed = urlAuth || localAuth
-    const role = urlRole || localRole
-
-    if (isAuthed && role === 'student') {
+    if (urlAuth && urlRole === 'student') {
       localStorage.setItem('isAuthenticated', 'true')
       localStorage.setItem('role', 'student')
-      if (urlAuth) {
-        window.history.replaceState({}, '', window.location.pathname)
-        console.log('[Student] Auth passed via URL, persisted to localStorage, URL cleaned')
-      }
-      setAuthChecked(true)
-    } else {
-      console.log('[Student] Auth FAILED, redirecting to landing')
-      window.location.href = import.meta.env.VITE_LANDING_URL
+      window.history.replaceState({}, '', window.location.pathname)
+    }
+
+    // Check if user is authenticated
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true'
+    const role = localStorage.getItem('role')
+
+    if (!isAuthenticated || role !== 'student') {
+      // Redirect to landing page if not authenticated
+      const landingUrl = import.meta.env.VITE_LANDING_URL || 'http://localhost:5173'
+      window.location.href = landingUrl
     }
   }, [])
-
-  if (!authChecked) return null
 
   const PageComponent = pages[page] || Dashboard
 
